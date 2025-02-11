@@ -1,6 +1,6 @@
-const { withNx } = require('@nx/rollup/with-nx');
+import { withNx } from '@nx/rollup/with-nx.js'
 
-module.exports = withNx(
+export default withNx(
   {
     main: './src/index.ts',
     outputPath: './dist',

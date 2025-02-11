@@ -1,0 +1,50 @@
+diff --git a/node_modules/@nx/rollup/src/plugins/plugin.js b/node_modules/@nx/rollup/src/plugins/plugin.js
+index 7a29436..5241a2b 100644
+--- a/node_modules/@nx/rollup/src/plugins/plugin.js
++++ b/node_modules/@nx/rollup/src/plugins/plugin.js
+@@ -87,17 +87,20 @@ async function buildRollupTarget(configFilePath, projectRoot, options, context,
+         loadConfigFile = require('rollup/loadConfigFile').loadConfigFile;
+     }
+     const namedInputs = (0, get_named_inputs_1.getNamedInputs)(projectRoot, context);
+-    const rollupConfig = (await loadConfigFile((0, devkit_1.joinPathFragments)(context.workspaceRoot, configFilePath), {}, true // Enable watch mode so that rollup properly reloads config files without reusing a cached version
++    const isTsConfig = configFilePath.endsWith('ts');
++    const tsConfigPlugin = "@rollup/plugin-typescript"
++    const rollupConfig = (await loadConfigFile((0, devkit_1.joinPathFragments)(context.workspaceRoot, configFilePath), isTsConfig ? { configPlugin: tsConfigPlugin } : {}, true // Enable watch mode so that rollup properly reloads config files without reusing a cached version
+     )).options;
+     const outputs = getOutputs(rollupConfig, projectRoot);
+     const targets = {};
+     targets[options.buildTargetName] = {
+-        command: `rollup -c ${(0, path_1.basename)(configFilePath)}${configFilePath.endsWith('ts')
+-            ? ' --configPlugin @rollup/plugin-typescript'
+-            : ''}`,
++        command: `rollup -c ${(0, path_1.basename)(configFilePath)}${isTsConfig
++            ? ` --configPlugin ${tsConfigPlugin}`
++            : ''
++            }`,
+         options: { cwd: projectRoot },
+         cache: true,
+-        dependsOn: [`^${options.buildTargetName}`],
++        dependsOn: [`^ ${options.buildTargetName} `],
+         inputs: [
+             ...('production' in namedInputs
+                 ? ['production', '^production']
+@@ -109,7 +112,7 @@ async function buildRollupTarget(configFilePath, projectRoot, options, context,
+             technologies: ['rollup'],
+             description: 'Run Rollup',
+             help: {
+-                command: `${pmc.exec} rollup --help`,
++                command: `${pmc.exec} rollup--help`,
+                 example: {
+                     options: {
+                         sourcemap: true,
+@@ -145,8 +148,8 @@ function getOutputs(rollupConfigs, projectRoot) {
+                         ? (0, path_1.dirname)(output.file)
+                         : 'dist';
+                 const outputPath = projectRoot === '.'
+-                    ? (0, devkit_1.joinPathFragments)(`{workspaceRoot}`, outputPathFromConfig)
+-                    : (0, devkit_1.joinPathFragments)(`{workspaceRoot}`, projectRoot, outputPathFromConfig);
++                    ? (0, devkit_1.joinPathFragments)(`{ workspaceRoot } `, outputPathFromConfig)
++                    : (0, devkit_1.joinPathFragments)(`{ workspaceRoot } `, projectRoot, outputPathFromConfig);
+                 outputs.add(outputPath);
+             }
+         }

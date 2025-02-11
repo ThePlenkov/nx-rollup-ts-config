@@ -1,0 +1,24 @@
+{
+  "name": "nx-rollup-ts-config",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nx/js": "^20.4.2",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
+    "nx": "20.4.2",
+    "typescript": "^5.7.3"
+  },
+  "nx": {},
+  "workspaces": [
+    "apps/**",
+    "packages/**"
+  ]
+}

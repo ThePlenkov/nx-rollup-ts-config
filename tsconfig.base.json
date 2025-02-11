@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    // Required compiler options
+    "composite": true,
+    "declaration": true,
+    "declarationMaps": true
+    // Other options...
+  }
+}

@@ -24,8 +24,6 @@
   },
   "nx": {},
   "workspaces": [
-    "apps/**",
-    "packages/**",
     "sample"
   ],
   "dependencies": {
